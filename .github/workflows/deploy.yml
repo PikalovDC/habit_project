@@ -7,6 +7,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: habit_project/habit_project
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +22,9 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: habit_project/habit_project
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker images

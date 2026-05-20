@@ -38,6 +38,8 @@ services:
   web:
     build: .
     container_name: habit_web
+    env_file:
+      - .env
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
@@ -80,6 +82,8 @@ services:
   celery:
     build: .
     container_name: habit_celery
+    env_file:
+      - .env
     command: celery -A celery_app worker --loglevel=info -P eventlet
     volumes:
       - .:/app
@@ -104,6 +108,8 @@ services:
   celery-beat:
     build: .
     container_name: habit_celery_beat
+    env_file:
+      - .env
     command: celery -A celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - .:/app

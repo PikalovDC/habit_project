@@ -19,8 +19,8 @@
 DEBUG=False
 ALLOWED_HOSTS=your-server-ip
 NAME=habits
-DB_USER=tracker_user
-DB_PASSWORD=tracker_password
+USER=tracker_user
+PASSWORD=tracker_password
 HOST=db
 PORT=5432
 CELERY_BROKER_URL=redis://redis:6379/0
