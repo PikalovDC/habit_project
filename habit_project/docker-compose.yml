@@ -38,6 +38,8 @@ services:
   web:
     build: .
     container_name: habit_web
+    env_file:
+      - .env
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
@@ -68,6 +70,7 @@ services:
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
       - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DJANGO_SETTINGS_MODULE=config.settings
     depends_on:
       db:
         condition: service_healthy
@@ -79,6 +82,8 @@ services:
   celery:
     build: .
     container_name: habit_celery
+    env_file:
+      - .env
     command: celery -A celery_app worker --loglevel=info -P eventlet
     volumes:
       - .:/app
@@ -91,6 +96,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DJANGO_SETTINGS_MODULE=config.settings
     depends_on:
       db:
         condition: service_healthy
@@ -102,6 +108,8 @@ services:
   celery-beat:
     build: .
     container_name: habit_celery_beat
+    env_file:
+      - .env
     command: celery -A celery_app beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     volumes:
       - .:/app
@@ -114,6 +122,7 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DJANGO_SETTINGS_MODULE=config.settings
     depends_on:
       db:
         condition: service_healthy
